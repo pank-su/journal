@@ -77,5 +77,6 @@ ros2 action send_goal <action_name> <action_type> <values> # Передаём о
 
 ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "{theta: 1.57}"
 
+ros2 run turtlesim turtlesim_node --ros-args --log-level WARN # установка вывод логгинга по умолчанию
 
 #+end_src
