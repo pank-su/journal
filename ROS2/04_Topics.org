@@ -1,0 +1,38 @@
+* Topics
+
+Топики -- это жизненно важный элемент ROS, который позволяет обмениваться сообщениями между узлами.
+
+[[./images/Topic-SinglePublisherandSingleSubscriber.gif]]
+
+
+Топики позволяют создавать связи 1 к 1, 1 ко многим, многие к одному и многие ко многим, как показано на рисунке ниже:
+
+[[./images/Topic-MultiplePublisherandMultipleSubscriber.gif]]
+
+Используя =rqt_graph= можно просмотреть топики
+
+[[./images/Screenshot from 2024-02-19 11-42-09.png]]
+
+
+#+begin_src shell
+ros2 topic echo <topic_name> # просмотр информации, которая передаётся в топике
+#+end_src
+
+При прослушивание топика создаётся отдельный узел (=node=), который  принимает сообщения от топика.
+
+#+begin_src shell
+ros2 topic info <topic_name> # получение информации о топике, количество публикантов и подписчиков
+#+end_src
+
+Возможна и самостоятельная отправка данных
+
+#+begin_src shell
+ros2 topic pub <topic_name> <msg_type> '<args>' # отправка данных в топик с опр. типом данных, =args= - сами данные
+ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0, y: 0.0, z: 0.0}, angular: {x: 0.0, y: 0.0, z: 1.8}}"
+# Параметры:
+# --once - отправка один раз
+# --rate 1 - отправлка раз в 1 секунду (1 Hz)
+#+end_src
+
+При отправке также, создаётся узел, который уже отправляет данные через топик.
+
