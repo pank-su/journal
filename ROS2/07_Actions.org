@@ -1,0 +1,18 @@
+* Actions
+
+Action -- это третий способ коммуникации в ROS 2. Это комплексное сочетание топиков и сервисов.
+Только клиент получает в ответ поток, который может быть отменён. То есть это поток данных.
+
+[[./images/Action-SingleActionClient.gif]]
+
+
+Взаимодействие с actions происходит довольно просто:
+
+#+begin_src shell
+ros2 action send_goal <action_name> <action_type> <values> # Передаём определённое значение, которое хотим получить
+# некий ожидаемый результат (values in YAML)
+# параметр --feedback - для логирование получаемых результатов в потоке данных
+
+ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "{theta: 1.57}"
+
+#+end_src

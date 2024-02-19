@@ -63,4 +63,19 @@ ros2 run <package_name> <executable_name> --ros-args --params-file <file_name> #
 
 ros2 run turtlesim turtlesim_node --ros-args --params-file turtlesim.yaml
 
+
+# Actions
+
+ros2 action list # получение списка actions
+# параметр -t - для возврата типов
+
+ros2 action info <action_name> # получение информации об action, а именно название, список клиентов и серверов
+
+ros2 action send_goal <action_name> <action_type> <values> # Передаём определённое значение, которое хотим получить
+# некий ожидаемый результат (values in YAML)
+# параметр --feedback - для логирование получаемых результатов в потоке данных
+
+ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "{theta: 1.57}"
+
+
 #+end_src
