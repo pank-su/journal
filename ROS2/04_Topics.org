@@ -36,3 +36,15 @@ ros2 topic pub --once /turtle1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 2.0
 
 При отправке также, создаётся узел, который уже отправляет данные через топик.
 
+
+#+begin_src shell
+ros2 topic hz <topic_name> # Получение времени обновления топика
+#+end_src
+
+** Дополнение
+
+Для типов =std_msgs/msg/Header= и =builtin_interfaces/msg/Time= имеют значения по умолчанию
+
+=ros2 topic pub /pose geometry_msgs/msg/PoseStamped '{header: *"auto"*, pose: {position: {x: 1.0, y: 2.0, z: 3.0}}}'=
+
+=ros2 topic pub /reference sensor_msgs/msg/TimeReference '{header: "auto", time_ref: *"now"*, source: "dumy"}'=
