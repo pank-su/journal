@@ -1,0 +1,23 @@
+* Что такое ros_bridge
+
+ros_bridge -- это интерфейс работы с ros2 на основе websockets, что
+позволяет взаимодействовать с ROS2 из вне.
+
+* Установка
+
+Для установки необходимо склонировать репозиторий и запустить сборщик colcon.
+
+#+begin_src shell
+git clone https://github.com/RobotWebTools/rosbridge_suite
+colcon build --symlink-install 
+#+end_src
+
+В ходе установки потребуются библиотеки Python их можно установить самостоятельно.
+
+Для использования библиотеки необходимо прописать команду:
+
+#+begin_src shell
+source ~/rosbridge_suite/install/local_setup.sh
+#+end_src
+
+Можно добавить в =~/.bashrc=.

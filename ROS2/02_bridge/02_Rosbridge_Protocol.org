@@ -1,0 +1,218 @@
+* Rosbridge Protocol
+
+Rosbridge Protocol - это протокол взаимодействия с ROS2 посредством websockets.
+Он использует Json, где op - операция, а id - идентификатор сообщения.
+
+Примеры использования протокола в языке Python представлены в [[./python_examples][папке]].
+
+** Описание входных данных протокола 
+
+*** TODO Fragments
+
+*** Topics
+
+**** Объявление топика (advertise)
+
+#+begin_src json
+{
+    "op": "advertise",
+    "topic": <string>,
+    "type": <string>
+}
+#+end_src
+
+- topic - название топика, в который мы собираемся публиковать
+- type - тип, который мы собираемся отправить
+  - Если тема не существует и тип, корректный, то мы создаём топик с необходимым типом
+  - Если топик существует с другим типом -> _ошибка_
+  - Если топик существует с этим же типом то создастся другой публикатор
+  - Если топика нет  -> _ошибка_
+
+Для отключения объявления топика используется операция =unadvertise=
+#+begin_src json
+{
+    "op": "unadvertise",
+    "topic": <string>
+}
+#+end_src
+- topic - название топика, в который мы собираемся публиковать
+
+****  Подписка
+
+#+begin_src json
+{
+    "op": "subscribe",
+    "topic": <string>,
+    "type": <string?>,
+    "throttle_rate": <int> = 0,
+    "queue_length": <int> = 0,
+    "fragment_size": <int?>,
+    "compression": <string?>
+}
+#+end_src
+
+- topic - название топика
+- type - тип возвращаемого значения
+- throttle_rate - минимальное время отправки сообщений (ms)
+- queue_length - размер очереди буферных сообщений
+- fragment_size - максимальное размера сообщения, до того как оно станет фрагментом
+- compression - выбранное сжатие ("none", "png", "cbor", and "cbor-raw")
+
+Отписка:
+#+begin_src json
+{
+    "op": "unsubscribe",
+    "topic": <string>
+}
+#+end_src
+
+- topic - название топика
+
+*** Service
+
+**** Объявление сервиса
+
+#+begin_src json
+{
+  "op": "advertise_service",
+  "type": <string>,
+  "service": <string>
+}
+#+end_src
+
+- type - тип возвращаемого значения
+- service - название сервиса
+
+#+begin_src json
+{
+    "op": "unadvertise_service",
+    "service": <string>
+}
+#+end_src
+
+- service - название сервиса
+
+**** Вызов сервиса
+#+begin_src json
+{ "op": "call_service",
+  "service": <string>,
+  "args": <list<json>?>,
+  "fragment_size": <int?>,
+  "compression": <string?>
+}
+#+end_src
+
+- service - название сервиса
+- args - аргументы сервису
+- fragment_size - максимальное размера сообщения, до того как оно станет фрагментом
+- compression - выбранное сжатие ("none", "png", "cbor", and "cbor-raw")
+
+
+**** Ответ сервиса
+
+#+begin_src json
+{ "op": "service_response",
+  "service": <string>,
+  "values": <list<json>?>,
+  "result": <boolean>
+}
+#+end_src
+
+- service - название сервиса
+- values - результат ответа
+- result - успешен ли выполнение
+
+*** Action
+
+**** Объявление сервиса
+
+#+begin_src json
+{
+    "op": "advertise_action",
+    "type": <string>,
+    "action": <string>
+}
+#+end_src
+
+- type - тип ответа
+- action - название action
+
+Удаление сервиса:
+
+#+begin_src json
+{
+    "op": "unadvertise_action",
+    "action": <string>
+}
+#+end_src
+- action - название action
+
+
+
+**** Запуск action
+
+#+begin_src json
+{
+    "op": "send_action_goal",
+    "action": <string>,
+    "action_type": <string>,
+    "args": <list<json>?>,
+    "feedback": <boolean?>,
+    "fragment_size": <int?>,
+    "compression": <string?>
+}
+#+end_src
+- action - название action
+- action_type - тип сообщения
+- args - аргументы
+- feedback (TODO)
+- fragment_size - максимальное размера сообщения, до того как оно станет фрагментом
+- compression - выбранное сжатие ("none", "png", "cbor", and "cbor-raw"
+
+
+Отмена action:
+
+#+begin_src json
+{
+  "op": "cancel_action_goal",
+  "id": <string>,
+  "action": <string>
+}
+#+end_src
+
+- action - название action
+- id - обязательный параметр, для отмены опр. goal
+
+
+**** Feedback Action
+
+#+begin_src json
+{
+    "op": "action_feedback",
+    "id": <string>,
+    "action": <string>,
+    "values": <json>
+}
+#+end_src
+
+- id - обязательный параметр, для передачи feeadback в опр. ответ
+- action - название action
+- values - значение
+
+  
+****  Результат action
+#+begin_src json
+{ "op": "action_result",
+  "id": <string>,
+  "action": <string>,
+  "values": <json>,
+  "result": <boolean>
+}
+#+end_src
+- action - название action
+- id - обязательный параметр, для передачи feeadback в опр. ответ
+- values  - результат
+- result - удачно ли
+
+
+** TODO Описание выходных данных протокола
