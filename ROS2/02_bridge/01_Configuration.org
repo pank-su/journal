@@ -1,1 +1,27 @@
-* TODO Конфигурация
+* Конфигурация
+
+Конфигурация =rosbridge=  идёт по-средством [[link][настройки запускаемых файлов (Launch files)]].
+
+В таблице ниже приведены описание параметров и их установка.
+
+| Название параметра | Значение по умолчанию | Описание                       |
+|--------------------+-----------------------+--------------------------------|
+| port               |                  9090 | Порт где будет доступен сервер |
+| topic_glob         |                       | Список доступных топиков       |
+| service_glob       |                       | Список доступных сервисов      |
+| action_glob        |                       | Список доступных action        |
+
+** Пример конфигурации
+
+#+begin_src xml
+<launch>
+  <include file="$(find-pkg-share rosbridge_server)/launch/rosbridge_websocket_launch.xml" > 
+    <arg name="port" value="8080"/>
+    <arg name="topic_glob" value="[*]"/>
+    <arg name="action_glob" value="[*]"/>
+    <arg name="service_glob" value="[*]"/>
+
+  </include>
+</launch>
+
+#+end_src
