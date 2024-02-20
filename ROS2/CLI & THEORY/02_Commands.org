@@ -80,3 +80,25 @@ ros2 action send_goal /turtle1/rotate_absolute turtlesim/action/RotateAbsolute "
 ros2 run turtlesim turtlesim_node --ros-args --log-level WARN # установка вывод логгинга по умолчанию
 
 #+end_src
+
+
+** Запуск нескольких узлов одновременно
+
+#+begin_src shell
+ros2 launch turtlesim multisim.launch.py
+#+end_src
+
+#+begin_src python
+# turtlesim/launch/multisim.launch.py
+
+from launch import LaunchDescription
+import launch_ros.actions
+
+def generate_launch_description():
+    return LaunchDescription([
+        launch_ros.actions.Node(
+            namespace= "turtlesim1", package='turtlesim', executable='turtlesim_node', output='screen'),
+        launch_ros.actions.Node(
+            namespace= "turtlesim2", package='turtlesim', executable='turtlesim_node', output='screen'),
+    ])
+#+end_src
